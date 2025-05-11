@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Efecto Fotoeléctrico</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        body{
+            background-color: #dbd9d9;
+        }
+        h1{
+            width: 100%;
+            padding: 20px;
+            background-color: #7aa184;
+        }
+        .contenido {
+            width: 80%;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            font-size: 20px;
+            align-items: center;
+            margin: 30px auto 30px auto;
+            background-color: white;
+            box-shadow: 2px 2px 2px 2px grey;
+            padding: 20px;
+        }
+        .contenido div{
+            margin: auto;
+        }
+        .contenido div a{
+            display: block;
+            color: white;
+            padding: 20px;
+            background-color: #7aa184;
+            margin-bottom: 10px;
+            text-decoration: none;
+            transition: .5s;
+        }
+        .contenido div a:hover{
+            scale: 1.2;
+            
+        }
+        /*ESTILO SIMULADOR*/
+        .contenedor {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 3px 4px 8px 3px gray;
+            width: 80%;
+            margin: 0 auto 50px auto;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            box-sizing: border-box;
+            height: 550px;
+            align-items: center;
+        }
+        
+        select, input, button {
+            box-sizing: border-box;
+            margin-top: 10px;
+            padding: 10px;
+            width: 90%;
+        }
+        button {
+            background-color: #7aa184;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .simulation-container {
+            position: relative;
+            height: 300px;
+            width: 90%;
+            border: 2px solid #ccc;
+            margin: auto;
+            margin-top: 20px;
+            
+        }
+        .photon, .electron, .electronn {
+            position: absolute;  
+        }
+        .photon {
+            width: 30px;
+            height: 30px;
+            background-color: yellow;
+            border-radius: 50%;
+        }
+        .electron,.electronn {
+            width: 15px;
+            height: 15px;
+            display: none;
+        }
+        .material{
+            background-color: grey;
+            margin: 150px auto 0 180px;
+            width: 100px;
+            height: 100px;
+            padding-top: 40px;
+            
+        }
+        .equipo{
+            width: 80%;
+            margin: 50px auto 50px auto;
+            height: 700px;
+            background-color: white;
+            box-shadow: 3px 4px 8px 3px gray;
+
+        }
+        .lampara{
+            
+            width: 60px;
+            transform: scaleX(-1);
+            transform: scaleY(-1);
+            display: block;
+            position: absolute;
+            z-index: 1000;
+            
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Efecto Fotoeléctrico</h1>
+    <div class="contenido">
+        <div>
+            <h2>¿Qué es el efecto fotoeléctrico?</h2>
+            <p>En  el  fenómeno  de  la  llamada  emisión  fotoeléctrica,  un  haz  de  luz  al  chocar  contra  un 
+                material  causa  que  electrones  del  material  sean  emitidos.  Por  otro  lado,  el  modelo  clásico  de  la 
+                onda  predice  que  entre  más  intensidad  tenga  un  haz  de  luz  mayor  será  su  amplitud  y,  por  tanto, 
+                mayor será la energía de la onda. <br>
+                De  esta  manera,  un  haz  de  mayor  intensidad  al  chocar  en  un  material  debería  inducir 
+                fotoelectrones  más  energéticos.  Por  su  parte,  el  modelo  cuántico  predice  que  la  luz  a  frecuencias 
+                mayores  debería  producir  fotoelectrones  de  mayor  energía,  independiente  de  la  intensidad, 
+                mientras  que  al  aumentar  la  intensidad  de  la  luz  sólo  debe  incrementarse  el  número  de  electrones 
+                emitidos (es decir, la corriente fotoeléctrica). 
+            </p><br>
+            <p>En el siguiente Simulador podremos observar cual es la energia cinetica de los elctrones desprendidos dependiendo de material asi como la velocidad de estos mismos si es que sucede el efecto fotoelectrico</p>
+        </div>
+        <div>
+            <a href="#josue">Ir al Simulador</a>
+        
+        </div>
+    </div>
+        
+    </div>
+
+    <div class="contenedor" id="josue">
+        <div>
+            <h2>Simulador de Efecto Fotoeléctrico</h2>
+            <!-- Selección de metal -->
+            <label for="metal">Selecciona un metal:</label>
+            <select id="metal">
+                <option value="Na">Sodio (Na)</option>
+                <option value="Al">Aluminio (Al)</option>
+                <option value="Cu">Cobre (Cu)</option>
+                <option value="Si">Silicio (Si)</option>
+                <option value="Au">Oro (Au)</option>
+                <option value="Ag">Plata (Ag)</option>
+            </select>
+            <label for="frecuencia">Frecuencia de la luz (Hz):</label>
+            <input type="number" id="frecuencia" placeholder="Ejemplo: 50e14" step="any">
+            <p>e = x10</p>
+            <button onclick="calcularEnergia()">Iniciar simulacion</button>
+            
+        </div>
+        <div>
+            <div class="contenedorLampara">
+                <img src="https://cdn-icons-png.flaticon.com/512/5979/5979465.png" alt="" class="lampara">
+            </div>
+            <div class="simulation-container">
+                
+                <div id="photon" class="photon"></div>
+                <img src="https://cdn-icons-png.flaticon.com/512/1533/1533923.png" alt="" class="electron" id="electron">
+                <img src="https://cdn-icons-png.flaticon.com/512/1533/1533923.png" alt="" class="electronn" id="electronn">
+                <img src="https://cdn-icons-png.flaticon.com/512/1533/1533923.png" alt="" class="electronn" id="electronnn">
+                
+                <div class="material" id="material">Material</div>
+                <div id="resultado"></div>
+                <br><br>
+
+                <p>La velocidad con la que salen disparados los electrones es proporcional a la real pero no igual por obvias razones.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const josue = {
+            'Na': 2.28 * 1.60218e-19,  // Sodio
+            'Al': 4.28 * 1.60218e-19,  // Aluminio
+            'Cu': 4.65 * 1.60218e-19,
+            'Si': 4.60 * 1.60218e-19,
+            'Au': 5.10 * 1.60218e-19,  // Oro
+            'Ag': 4.73 * 1.60218e-19   // Plata
+        };
+
+        const h = 6.626e-34;  // Constante de Planck
+        const m_e = 9.11e-31;  // Masa eectron
+
+        // Función para calcular energía cinética y velocidad
+        function calcularEnergia() {
+            const metal = document.getElementById("metal").value;
+            const frecuencia = parseFloat(document.getElementById("frecuencia").value);
+
+            // Verifica si la frecuencia es válida
+            if (isNaN(frecuencia) || frecuencia <= 0) {
+                document.getElementById("resultado").innerHTML = "Por favor, ingresa una frecuencia válida.";
+                return;
+            }
+
+            // Función de trabajo del metal seleccionado
+            const W = josue[metal];
+
+            // Energía del fotón
+            const energiaFotón = h * frecuencia;
+
+            // Verifica si la frecuencia supera la funcion de TrabajspSADAD
+            if (energiaFotón >= W) {
+                //CAMBIAR DE MATERIAL DEPENDIENDO LO SELECCIONADO
+                if (W == 2.28 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Na";
+                    document.getElementById("material").style.backgroundColor = "#EAF2FB";
+                }
+                else if (W == 4.28 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Al";
+                    document.getElementById("material").style.backgroundColor = "#6F7070";
+                    document.getElementById("material").style.color = "white";
+                }
+                else if (W == 4.65 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Cu";
+                    document.getElementById("material").style.backgroundColor = "#C3663B";
+                }
+                else if (W == 4.60 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Si";
+                    document.getElementById("material").style.backgroundColor = "#2C333C";
+                    document.getElementById("material").style.color = "white";
+                }
+                else if (W == 5.10 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Au";
+                    document.getElementById("material").style.backgroundColor = "#E6C018";
+                    document.getElementById("material").style.color = "";
+                }
+                else if (W ==  4.73 * 1.60218e-19)
+                {
+                    document.getElementById("material").innerHTML = "Ag";
+                    document.getElementById("material").style.backgroundColor = "#C3C9CF";
+                    document.getElementById("material").style.color = "";
+                }
+                const energiaCinetica = energiaFotón - W;
+                const velocidad = Math.sqrt((2 * energiaCinetica) / m_e);  // CAlculo de la velocidad
+
+                document.getElementById("resultado").innerHTML = `
+                    V=<strong>${velocidad.toExponential(2)} m/s ➡️</strong><br><br>
+                    Energia cinetica: <strong>${(energiaCinetica * 1e19).toFixed(2)} × 10⁻¹⁹ J</strong><br>
+                     
+                `;
+        
+                // Iniciar la animación
+                iniciarAnimacion(velocidad);
+            } else {
+                document.getElementById("resultado").innerHTML = "La frecuencia es insuficiente para liberar electrones.";
+            }
+        }
+
+        
+
+        function iniciarAnimacion(velocidad) {
+            const photon = document.getElementById("photon");
+            const electron = document.getElementById("electron");
+            const electronn = document.getElementById("electronn");
+            const electronnn = document.getElementById("electronnn");
+            photon.style.display = "block"; 
+            electron.style.display = "none"; 
+            electronn.style.display = "none"; 
+            electronnn.style.display = "none"; 
+
+            // Posiciones iniciales
+            photon.style.right = "10px";
+
+            electron.style.left = "5px";
+            electron.style.top = "170px";
+            electronn.style.left = "10px";
+            electronn.style.top = "185px";
+            electronnn.style.left = "8px";
+            electronnn.style.top = "200px"; 
+
+            // Animación del fotón moviéndose hacia el metal
+            let photonPosition = 10;
+            let interval = setInterval(function() {
+                photonPosition += 5; // Incrementa la posición
+                photon.style.left = photonPosition + "px";
+                photon.style.top = photonPosition + "px";
+
+                if (photonPosition >= 180) {  // Cuando el fotón llega al metal
+                    clearInterval(interval);
+
+                    // Si la energía es suficiente, el electrón se dispara
+                    if (velocidad > 0) {
+                        photon.style.display = "none"; 
+                        electron.style.display = "block";
+                        electronn.style.display = "block";
+                        electronnn.style.display = "block";  
+                        moverElectron(velocidad); 
+                    }
+                }
+            }, 20);
+        }
+
+        function moverElectron(velocidad) {
+            const electron = document.getElementById("electron");
+            const electronn = document.getElementById("electronn");
+            const electronnn = document.getElementById("electronnn");
+            const container = document.querySelector(".simulation-container");
+            let electronPosition = 180; 
+            let electronnPosition = 190; 
+            let electronncPosition = 185;// Inicia en la posición del metal
+            let speed = velocidad / 1e6;  // Convertir la velocidad para ajustarla a la animación
+
+            let interval = setInterval(function() {
+                electronPosition += speed;
+                electron.style.left = electronPosition + "px"; 
+                electronn.style.left = electronPosition + "px";
+                electronnn.style.left = electronPosition + "px";
+                 // Mover el electrón hacia la derecha
+
+                if (electronPosition > container.offsetWidth) {
+                      // Detener
+                      clearInterval(interval);  
+
+                   
+                }
+            }, 10);
+        }
+        
+    </script>
+
+
+</body>
+</html>
